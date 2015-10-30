@@ -164,7 +164,7 @@ class Parser:
         return True, token
 
     def memoized(self, index, kind, cursor):
-        m = self.memo.get(index)
+        m = self.memo.get(index, None)
         if m is not None and m.kind == kind:
             cursor.put_state(m.state)
             return True, m.token
@@ -313,13 +313,13 @@ class Parser:
             return False, None
 
         members = []
-        indent_length = None
+        indent_length = -1
         while True:
             found, length = cursor.match_indent(data)
             if not found:
                 break
 
-            if indent_length is None:
+            if indent_length < 0:
                 indent_length = length
             elif length > indent_length:
                 self.error(cursor, "Unexpected indent.")

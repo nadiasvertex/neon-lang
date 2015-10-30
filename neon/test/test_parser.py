@@ -39,3 +39,5 @@ class TestParser(TestCase):
 
         found, node = p.type_definition(data, c)
         self.assertTrue(found)
+        self.assertEqual(3, len(node.members))
+        
